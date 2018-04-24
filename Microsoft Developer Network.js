@@ -9,9 +9,12 @@
 // ==/UserScript==
 
 (function() {
-    'use strict';
-
-    if (location.href.match(/tr-tr/)) {
-        location.href = window.location.href.replace(/tr-tr/, "en-US");
+    
+    if (match = location.href.match(/https:\/\/msdn\.microsoft\.com\/(.*?)\/.*/)) {
+        var lang = match[1];
+        if (lang != "en-US") {
+            location.href = location.href.replace(lang, "en-US");
+        }
     }
+    
 })();
