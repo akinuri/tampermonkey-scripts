@@ -11,7 +11,11 @@
 
 (function() {
     'use strict';
-
+    
+    // created on the spur of the moment
+    // see https://www.youtube.com/watch?v=WNkLtHGPi8U&lc=Ugyah1Fuq6ZyuIHsLY94AaABAg
+    // will update it later, so that it'll work with images that're loaded when page is scrolled down
+    
     window.onload = function () {
 
         setTimeout(function () {
