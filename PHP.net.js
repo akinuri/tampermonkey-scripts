@@ -21,7 +21,7 @@
     if (match = location.href.match(/http:\/\/php.net\/manual(\/.*?\/).*/)) {
         var lang = match[1];
         if (lang != "/en/") {
-            location.href = window.location.href.replace(lang, "/en/");
+            location.href = location.href.replace(lang, "/en/");
         }
     }
 
