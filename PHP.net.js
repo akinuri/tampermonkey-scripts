@@ -15,7 +15,7 @@
     // this is usually not a translation related problem, but a language related problem
     // every programming language (basics, concepts, etc.) I've encountered is written in English
     // when you translate these into another language, they do not make much sense, because
-    // these concepts do not exists in the target language
+    // these concepts do not exist in the target language
     // so I rather view the original
 
     if (match = location.href.match(/http:\/\/php.net\/manual(\/.*?\/).*/)) {
