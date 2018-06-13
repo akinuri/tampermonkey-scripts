@@ -4,7 +4,9 @@
 // @version      0.1
 // @description  Change language to "en"
 // @author       Noreh AD
-// @match        http://php.net/manual/*/*
+// @include      http://php.net/manual/*/*
+// @include      http://docs.php.net/manual/*/*
+// @include      https://secure.php.net/manual/*/*
 // @grant        none
 // ==/UserScript==
 
@@ -18,7 +20,7 @@
     // these concepts do not exist in the target language
     // so I rather view the original
 
-    if (match = location.href.match(/http:\/\/php.net\/manual(\/.*?\/).*/)) {
+    if (match = location.href.match(/https?:\/\/(?:secure\.)?(?:docs\.)?php\.net\/manual(\/.*?\/).*/)) {
         var lang = match[1];
         if (lang != "/en/") {
             location.href = location.href.replace(lang, "/en/");
