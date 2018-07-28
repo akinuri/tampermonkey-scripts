@@ -18,6 +18,7 @@
         "One Piece",
         "Fairy Tail",
         "Fairy Tail Zero",
+        "Fairy Tail 100 Years Quest",
         "The Breaker: New Waves",
         "Onepunch-Man",
         "The Fiary Captivity",
@@ -26,18 +27,13 @@
         "Godspeed",
     ];
     
-    var rows = Array.from(document.querySelectorAll(".c6"));
-    
-    rows.forEach(function (row) {
-        
+    Array.from(document.querySelectorAll(".c6")).forEach(function (row) {
         var title = row.querySelector("strong").innerText;
-        
         mangas.forEach(function (manga) {
             if (manga == title) {
                 row.style.backgroundColor = "hsla(0, 100%, 50%, .2)";
             }
         });
-        
     });
     
 })();
