@@ -44,14 +44,22 @@
     window.addEventListener("load", function () {
         setTimeout(function () {
             if (typeof redux != "undefined") {
+                window.id = "";
+                jQuery(".redux-group-menu li").each(function () {
+                    if (this.innerText.trim() == "Custom CSS") {
+                        id = jQuery(this).find("a")[0].dataset.rel;
+                        console.log(id);
+                        return false;
+                    }
+                });
                 currentSection = jQuery("#currentSection");
                 editor = ace.edit("custom_css-editor");
                 window.button = elem("input", {"type":"button", "class":"btn-css-editor"}, "CSS Editor");
-                if (location.search.match("tab=28") || currentSection.val() == "28") {
+                if (location.search.match("tab="+id) || currentSection.val() == id) {
                     setTimeout(addButton, 200);
                 }
                 jQuery(".redux-group-menu").on("click", "li", function () {
-                    if (currentSection.val() == "28") {
+                    if (currentSection.val() == id) {
                         setTimeout(addButton, 200);
                         jQuery("#redux-header")[0].scrollIntoView();
                         editor.scrollToLine(0);
@@ -70,9 +78,11 @@
             window.open("https://akinuri.github.io/css-editor/");
         });
     }
+    window.addButton = addButton;
 
     function removeButton() {
         jQuery(".btn-css-editor").remove();
     }
+    window.removeButton = removeButton;
 
 })(window);
