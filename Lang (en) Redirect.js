@@ -22,7 +22,7 @@
     // when you translate these into another language, they do not make much sense, because
     // these concepts do not exist in the target language
     // so I rather view the original
-
+    
     var patterns = [
         {
             site : "php.net",
@@ -46,10 +46,10 @@
             ],
         },
     ];
-
+    
     var match = null;
     var lang  = null;
-
+    
     patterns.forEach((obj) => {
         obj.patterns.forEach((pattern) => {
             if (match = location.href.match(pattern)) {
@@ -60,5 +60,5 @@
             }
         });
     });
-
+    
 })();
