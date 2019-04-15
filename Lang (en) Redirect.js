@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Lang (en) Redirect
 // @namespace    https://github.com/akinuri
-// @version      0.2
-// @description  Change language to "en"
+// @version      0.5
+// @description  Switch language to "en"
 // @author       Noreh AD
-// @include      http://php.net/manual/*/*
+// @include      *php.net/manual/*/*
 // @include      http://docs.php.net/manual/*/*
 // @include      https://secure.php.net/manual/*/*
 // @include      *docs.microsoft.com/*
@@ -23,49 +23,42 @@
     // these concepts do not exist in the target language
     // so I rather view the original
 
-    var patterns = {
-        "php.net" : [
-            /https?:\/\/(?:secure\.)?(?:docs\.)?php\.net\/manual(\/.*?\/).*/,
-            /http:\/\/php\.net\/manual\/.*\/.*/,
-            /http:\/\/docs\.php\.net\/manual\/.*\/.*/,
-            /https:\/\/secure\.\php\.net\/manual\/.*\/.*/
-        ],
-        "docs.ms" : [
-            /https:\/\/docs\.microsoft\.com\/(.*?)\/.*/
-        ],
-        "msdn.ms" : [
-            /https:\/\/msdn\.microsoft\.com\/(.*?)\/.*/
-        ],
-        "dev.moz" : [
-            /https:\/\/developer\.mozilla\.org(\/.*?\/)docs\/.*/
-        ],
-    };
+    var patterns = [
+        {
+            site : "php.net",
+            lang : "/en/",
+            patterns: [
+                /https?:\/\/(?:www\.)?(?:secure\.)?(?:docs\.)?php\.net\/manual(\/.*?\/).*/,
+            ],
+        },
+        {
+            site : "microsoft.com",
+            lang : "/en-US/",
+            patterns: [
+                /https:\/\/(?:docs\.)?(?:msdn\.)?microsoft\.com\/(.*?)\/.*/,
+            ],
+        },
+        {
+            site : "mozilla.org",
+            lang : "/en-US/",
+            patterns: [
+                /https:\/\/developer\.mozilla\.org(\/.*?\/)docs\/.*/,
+            ],
+        },
+    ];
 
     var match = null;
     var lang  = null;
-    if (match = location.href.match(patterns["php.net"][0])) {
-        lang = match[1];
-        if (lang != "/en/") {
-            location.href = location.href.replace(lang, "/en/");
-        }
-    }
-    else if (match = location.href.match(patterns["docs.ms"][0])) {
-        lang = match[1];
-        if (lang != "en-US") {
-            location.href = location.href.replace(lang, "en-US");
-        }
-    }
-    else if (match = location.href.match(patterns["msdn.ms"][0])) {
-        lang = match[1];
-        if (lang != "en-US") {
-            location.href = location.href.replace(lang, "en-US");
-        }
-    }
-    else if (match = location.href.match(patterns["dev.moz"][0])) {
-        lang = match[1];
-        if (lang != "/en-US/") {
-            location.href = location.href.replace(lang, "/en-US/");
-        }
-    }
+
+    patterns.forEach((obj) => {
+        obj.patterns.forEach((pattern) => {
+            if (match = location.href.match(pattern)) {
+                lang = match[1];
+                if (lang != obj.lang) {
+                    location.href = location.href.replace(lang, obj.lang);
+                }
+            }
+        });
+    });
 
 })();
