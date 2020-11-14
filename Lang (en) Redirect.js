@@ -10,6 +10,7 @@
 // @include      *docs.microsoft.com/*
 // @include      *msdn.microsoft.com/*
 // @include      *developer.mozilla.org/*
+// @include      *opensubtitles.org/*
 // @grant        none
 // ==/UserScript==
 
@@ -22,7 +23,7 @@
     // when you translate these into another language, they do not make much sense, because
     // these concepts do not exist in the target language
     // so I rather view the original
-    
+
     var patterns = [
         {
             site : "php.net",
@@ -35,7 +36,7 @@
             site : "microsoft.com",
             lang : "/en-US/",
             patterns: [
-                /https:\/\/(?:docs\.)?(?:msdn\.)?microsoft\.com\/(.*?)\/.*/,
+                /https:\/\/(?:docs\.)?(?:msdn\.)?microsoft\.com(\/.*?\/).*/,
             ],
         },
         {
@@ -45,11 +46,19 @@
                 /https:\/\/developer\.mozilla\.org(\/.*?\/)docs\/.*/,
             ],
         },
+        {
+            site : "opensubtitles.org",
+            lang : "/sublanguageid-eng/",
+            patterns: [
+                // https://www.opensubtitles.org/en/search/sublanguageid-all/imdbid-3268978
+                /https:\/\/www\.opensubtitles\.org\/en\/search(\/sublanguageid-all\/)imdbid-\d+/,
+            ],
+        },
     ];
-    
+
     var match = null;
     var lang  = null;
-    
+
     patterns.forEach((obj) => {
         obj.patterns.forEach((pattern) => {
             if (match = location.href.match(pattern)) {
@@ -60,5 +69,5 @@
             }
         });
     });
-    
+
 })();
