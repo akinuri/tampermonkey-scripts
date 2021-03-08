@@ -51,7 +51,7 @@
             lang : "/sublanguageid-eng/",
             patterns: [
                 // https://www.opensubtitles.org/en/search/sublanguageid-all/imdbid-3268978
-                /https:\/\/www\.opensubtitles\.org\/en\/search(\/sublanguageid-all\/)imdbid-\d+/,
+                /https:\/\/www\.opensubtitles\.org\/(?:en|tr)\/search(\/sublanguageid-all\/)(imdbid|idmovie)-\d+/,
             ],
         },
     ];
