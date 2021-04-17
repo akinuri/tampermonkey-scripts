@@ -25,6 +25,7 @@
             "imgStyle"  : null,
             "name"      : ".name",
             "role"      : ".role",
+            "fixes"     : [],
         },
         {
             "url"       : "https://www.ayensoftware.com/ekibimiz/tr",
