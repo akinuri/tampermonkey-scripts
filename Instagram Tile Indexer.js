@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  Adds numbers to image tiles in the profile page.
 // @author       Noreh AD
-// @include      /^https:\/\/(www\.)?instagram.com\/[^/]+\/$/
+// @include      /^https:\/\/(www\.)?instagram.com\/[^/]+(\/)?$/
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
 // ==/UserScript==
@@ -14,7 +14,7 @@ class XPath2{static getElementPath(e,t=null){let n=[];for(t&&("string"==typeof t
 window.XPath2 = XPath2;
 
 (function() {
-    'use strict';
+    // 'use strict';
     
     window.addEventListener("load", () => {
 
@@ -60,7 +60,7 @@ window.XPath2 = XPath2;
                         lastGridIndex = parseInt(tile.dataset.gridIndex);
                         continue;
                     }
-                    lastGridIndex += lastScrollDir;
+                    lastGridIndex += lastScrollDir || 1;
                     let tileIndex = lastGridIndex;
                     tile.dataset.gridIndex = tileIndex;
                     markTileVisually(tile, tileIndex, totalTileCount);
@@ -85,10 +85,15 @@ window.XPath2 = XPath2;
                 tile.appendChild(mark);
             }
 
-            let lastScrollTop = 0;
-            let lastScrollDir = 0;
+            lastScrollTop = 0;
+            lastScrollDir = 0;
             function handleScroll() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                let scrollDistance = lastScrollTop - scrollTop;
+                if (Math.abs(scrollDistance) > innerHeight * 0.9) {
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                    return;
+                }
                 if (scrollTop > lastScrollTop) {
                     lastScrollDir = 1;
                 } else {
@@ -98,7 +103,7 @@ window.XPath2 = XPath2;
             }
             window.addEventListener('scroll', handleScroll);
             
-            // indexTiles();
+            indexTiles();
             
         }, 5000);
 
