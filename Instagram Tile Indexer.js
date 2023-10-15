@@ -14,7 +14,7 @@ class XPath2{static getElementPath(e,t=null){let n=[];for(t&&("string"==typeof t
 window.XPath2 = XPath2;
 
 (function() {
-    // 'use strict';
+    // "use strict";
     
     window.addEventListener("load", () => {
 
@@ -28,9 +28,7 @@ window.XPath2 = XPath2;
                 "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/div[2]/section/main/div/div[2]/article/div/div",
                 "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/div[2]/section/main/div/div[3]/article/div[1]/div",
             ];
-
             let gridEl = null;
-
             for (let gridPath of gridPaths) {
                 if (gridEl == null) {
                     gridEl = XPath2.getElementByXPath(gridPath);
@@ -41,16 +39,35 @@ window.XPath2 = XPath2;
 
             let observer = new MutationObserver(mutationsList => {
                 for (let mutation of mutationsList) {
-                    if (mutation.type === 'childList') {
+                    if (mutation.type === "childList") {
                         indexTiles();
                     }
                 }
             });
             observer.observe(gridEl, { childList: true });
-
+            
             function indexTiles() {
                 let tiles = XPath2.getElementsByXPath("div/div", gridEl);
-                if (lastScrollDir == -1) {
+                let firstTile = tiles[0];
+                let lastTile  = tiles[tiles.length - 1];
+                let needsIndexing = !("gridIndex" in firstTile.dataset) || !("gridIndex" in lastTile.dataset);
+                if (!needsIndexing) {
+                    return;
+                }
+                let initialScreen = false;
+                let scrollDir = 0;
+                if (!("gridIndex" in firstTile.dataset) && !("gridIndex" in lastTile.dataset)) {
+                    initialScreen = true;
+                    scrollDir = 1;
+                }
+                if (!initialScreen) {
+                    if ("gridIndex" in firstTile.dataset && !("gridIndex" in lastTile.dataset)) {
+                        scrollDir = 1;
+                    } else {
+                        scrollDir = -1;
+                    }
+                }
+                if (scrollDir == -1) {
                     tiles.reverse();
                 }
                 let lastGridIndex = 0;
@@ -60,7 +77,7 @@ window.XPath2 = XPath2;
                         lastGridIndex = parseInt(tile.dataset.gridIndex);
                         continue;
                     }
-                    lastGridIndex += lastScrollDir || 1;
+                    lastGridIndex += scrollDir;
                     let tileIndex = lastGridIndex;
                     tile.dataset.gridIndex = tileIndex;
                     markTileVisually(tile, tileIndex, totalTileCount);
@@ -80,29 +97,13 @@ window.XPath2 = XPath2;
                     color: hsl(0deg 0% 100% / 75%);
                 `);
                 mark.innerHTML = `
-                    <span>${currentIndex}</span> / <span style="font-size: 0.7em; opacity: 0.7;">${totalCount}</span>
+                    <span>${currentIndex}</span>
+                    /
+                    <span style="font-size: 0.7em; opacity: 0.7;">${totalCount}</span>
                 `;
                 tile.appendChild(mark);
             }
 
-            lastScrollTop = 0;
-            lastScrollDir = 0;
-            function handleScroll() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                let scrollDistance = lastScrollTop - scrollTop;
-                if (Math.abs(scrollDistance) > innerHeight * 0.9) {
-                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-                    return;
-                }
-                if (scrollTop > lastScrollTop) {
-                    lastScrollDir = 1;
-                } else {
-                    lastScrollDir = -1;
-                }
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-            }
-            window.addEventListener('scroll', handleScroll);
-            
             indexTiles();
             
         }, 5000);
