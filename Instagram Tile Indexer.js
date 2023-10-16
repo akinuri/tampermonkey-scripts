@@ -14,16 +14,19 @@ class XPath2{static getElementPath(e,t=null){let n=[];for(t&&("string"==typeof t
 window.XPath2 = XPath2;
 
 (function() {
-    // "use strict";
     
     window.addEventListener("load", () => {
-
+        
         setTimeout(() => {
             
             let totalTileCountPath = "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/div[2]/section/main/div/header/section/ul/li[1]/span";
             let totalTileCountEl = XPath2.getElementByXPath(totalTileCountPath);
+            if (!totalTileCountEl) {
+                console.warn("'x posts' element was not found.");
+                return;
+            }
             let totalTileCount = totalTileCountEl.textContent.trim();
-
+            
             let gridPaths = [
                 "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/div[2]/section/main/div/div[2]/article/div/div",
                 "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/div[2]/section/main/div/div[3]/article/div[1]/div",
@@ -36,7 +39,11 @@ window.XPath2 = XPath2;
                     break;
                 }
             }
-
+            if (!gridEl) {
+                console.warn("Posts grid was not found.");
+                return;
+            }
+            
             let observer = new MutationObserver(mutationsList => {
                 for (let mutation of mutationsList) {
                     if (mutation.type === "childList") {
@@ -83,7 +90,7 @@ window.XPath2 = XPath2;
                     markTileVisually(tile, tileIndex, totalTileCount);
                 }
             }
-
+            
             function markTileVisually(tile, currentIndex, totalCount) {
                 tile.style.position = "relative";
                 let mark = document.createElement("div");
@@ -103,11 +110,11 @@ window.XPath2 = XPath2;
                 `;
                 tile.appendChild(mark);
             }
-
+            
             indexTiles();
             
         }, 5000);
-
+        
     });
     
 })();
